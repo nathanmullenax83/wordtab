@@ -7,6 +7,8 @@
 #include <tuple>
 #include <deque>
 #include <algorithm>
+#include <random>
+#include <cstdlib>
 #include "dictionary.tpp"
 
 using std::vector, std::pair, std::deque, std::max, std::cout;
@@ -48,7 +50,7 @@ private:
                     suffix.push_back( window[j]);
                 }
                 data[prefix].push_back(suffix);
-                cout << compact_vector(prefix) << " => " << compact_vector(suffix) << std::endl;
+                //cout << compact_vector(prefix) << " => " << compact_vector(suffix) << std::endl;
             }
         }
     }
@@ -67,7 +69,31 @@ public:
     }
 
     void dump( size_t model ) {
+        pair<size_t, size_t> m = models[model];
+        for( auto it=data.begin(); it != data.end(); ++it) {
+            // prefix length matches
+            if( it->first.size()==m.first ) {
+                // get all suffixes
+                vector<size_t> prefix = it->first;
+                for( size_t i=0; i<it->second.size(); ++i) {
+                    vector<size_t> suffix = it->second[i];
+                    if( suffix.size() == m.second ) {
+                        cout << compact_vector(prefix) << "\t" << compact_vector(suffix) << "\n";
+                    }
+                }
+            }
+        }
+    }
 
+    vector<size_t> random_rule( vector<size_t> const &prefix ) {
+        if( data.count(prefix) ) {
+            // table contains rules for prefix
+            vector< vector<size_t> > rhss = data[prefix];
+            return rhss[std::rand()%rhss.size()];
+        } else {
+            // no applicable rule. Returning empty set.
+            return vector<size_t>();
+        }
     }
 };
 
