@@ -54,6 +54,24 @@ private:
             }
         }
     }
+
+    vector<size_t> right( vector<size_t> const &es, size_t n ) {
+        vector<size_t> vs;
+        for( size_t i=es.size()-n; i<es.size(); ++i ) {
+            vs.push_back( es[i]);
+        }
+        return vs;
+    }
+
+    vector<size_t> random_prefix() {
+        auto a = data.begin();
+        size_t width = data.size();
+        size_t elem = rand()%width;
+        while( elem-- > 0) {
+            ++a;
+        }
+        return a->first;
+    }
 public:
     size_t define_model( size_t prefix_len, size_t suffix_len ) {
         models.push_back( pair<size_t,size_t>(prefix_len,suffix_len));
@@ -101,7 +119,31 @@ public:
     
 
     vector<size_t> generate( size_t model, size_t length ) {
-        // todo
+        if( model >= models.size() ) { throw 1; }
+        pair<size_t, size_t> m = models[model];
+        vector<size_t> prefix;
+        while( prefix.size() != m.first ) {
+            prefix = random_prefix();
+        }
+        vector<size_t> generated;
+        for( size_t w: prefix ) {
+            generated.push_back(w);
+        }
+        while( generated.size() < length ) {
+            vector<size_t> suffix = random_rule(prefix);
+            // if we run out of rules, append a valid prefix
+            // and continue.
+            if( suffix.size()==0 ) {
+                suffix = random_prefix();
+            }
+            size_t psize = prefix.size();
+            for(size_t w:suffix) {
+                generated.push_back(w);
+                prefix.push_back(w);
+            }
+            prefix = right( prefix, m.first );
+        }
+        return generated;
     }
 };
 

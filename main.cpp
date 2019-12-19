@@ -5,7 +5,7 @@
 #include "dictionary.tpp"
 #include "sequencer.tpp"
 
-using std::cin, std::string, std::multimap;
+using std::cin, std::string;
 
 int main(int argc, char **argv) {
     Dictionary dict;
@@ -22,4 +22,7 @@ int main(int argc, char **argv) {
     }
     dict.dump();
     seq.dump( model_3_2 );
+    vector< size_t > wids = seq.generate( model_2_1, 100 );
+    vector< string > ws = dict.decode(wids);
+    
 }
