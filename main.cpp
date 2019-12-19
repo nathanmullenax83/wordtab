@@ -4,12 +4,14 @@
 
 #include "dictionary.tpp"
 #include "sequencer.tpp"
+#include "formatter.tpp"
 
 using std::cin, std::string;
 
 int main(int argc, char **argv) {
     Dictionary dict;
     Sequencer seq;
+    Formatter console;
 
     size_t model_1_1 = seq.define_model(1,1);
     size_t model_2_1 = seq.define_model(2,1);
@@ -22,7 +24,8 @@ int main(int argc, char **argv) {
     }
     dict.dump();
     seq.dump( model_3_2 );
-    vector< size_t > wids = seq.generate( model_2_1, 100 );
+    vector< size_t > wids = seq.generate( model_2_1, 1000 );
     vector< string > ws = dict.decode(wids);
-    
+    console.print(ws);
+
 }
