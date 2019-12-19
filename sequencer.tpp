@@ -68,6 +68,8 @@ public:
         process_window();
     }
 
+    
+
     void dump( size_t model ) {
         pair<size_t, size_t> m = models[model];
         for( auto it=data.begin(); it != data.end(); ++it) {
@@ -94,6 +96,12 @@ public:
             // no applicable rule. Returning empty set.
             return vector<size_t>();
         }
+    }
+
+    
+
+    vector<size_t> generate( size_t model, size_t length ) {
+        // todo
     }
 };
 

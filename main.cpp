@@ -21,5 +21,5 @@ int main(int argc, char **argv) {
         seq.append(W);
     }
     dict.dump();
-    seq.dump( model_2_1 );
+    seq.dump( model_3_2 );
 }
