@@ -3,8 +3,12 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <sstream>
 
-using std::vector, std::cout, std::string;
+#include "dictionary.tpp"
+#include "sequencer.tpp"
+
+using std::vector, std::cout, std::string, std::stringstream, std::cin;
 
 class Formatter {
 private:
@@ -20,6 +24,33 @@ public:
                 cout << "\n" << w << " ";
                 len = w.size()+1;
             }
+        }
+    }
+
+    template< class T>
+    static T parse( string const &s ) {
+        stringstream vs;
+        vs << s;
+        T v;
+        vs >> v;
+        return v;
+    }
+
+    
+
+    static vector<string> parse_args( int argc, char **argv ) {
+        vector<string> args;
+        for( int i=0; i<argc; ++i) {
+            args.push_back( argv[i] );
+        }
+        return args;
+    }
+
+    void read( Dictionary &dict, Sequencer &seq, std::istream &in ) {
+        string w;
+        while( in >> w ) {
+            size_t W = dict.define(w);
+            seq.append(W);
         }
     }
 };

@@ -9,23 +9,27 @@
 using std::cin, std::string;
 
 int main(int argc, char **argv) {
+    
+
     Dictionary dict;
     Sequencer seq;
     Formatter console;
 
-    size_t model_1_1 = seq.define_model(1,1);
-    size_t model_2_1 = seq.define_model(2,1);
-    size_t model_3_2 = seq.define_model(3,2);
+    vector<string> args = console.parse_args(argc, argv);
+    console.print(args);
 
-    string w;
-    while( cin >> w ) {
-        size_t W = dict.define(w);
-        seq.append(W);
+    
+    // parse arguments
+    if( args.size() == 6 && args[1]=="markov" ) {
+        size_t prefix_length = console.parse<size_t>(args[2]);
+        size_t suffix_length = console.parse<size_t>(args[3]);
+        size_t model = seq.define_model( prefix_length, suffix_length );
+        
+        console.read( dict, seq, cin );
+        if( args[4]=="text" ) {
+            size_t length = console.parse<size_t>( args[5] );
+            console.print( dict.decode(seq.generate(model,length)));
+        }
     }
-    dict.dump();
-    seq.dump( model_3_2 );
-    vector< size_t > wids = seq.generate( model_2_1, 1000 );
-    vector< string > ws = dict.decode(wids);
-    console.print(ws);
 
 }
