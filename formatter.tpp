@@ -13,15 +13,15 @@ using std::vector, std::cout, std::string, std::stringstream, std::cin;
 class Formatter {
 private:
 public:
-    static void print( vector<string> const &ws, size_t target_width=60) {
+    static void print( vector<string> const &ws, size_t target_width=60, string const &space=" ") {
         size_t len(0); // length of the current line.
         for( string w:ws ) {
             if( len + w.size() < target_width ) {
                 cout << w;
-                cout << " ";
+                cout << space;
                 len += w.size() + 1;
             } else {
-                cout << "\n" << w << " ";
+                cout << "\n" << w << space;
                 len = w.size()+1;
             }
         }
@@ -51,6 +51,15 @@ public:
         while( in >> w ) {
             size_t W = dict.define(w);
             seq.append(W);
+        }
+    }
+
+    void read_chars( Dictionary &dict, Sequencer &seq, std::istream &in ) {
+        string w(".");
+        char c;
+        while( (c = in.get()) !=EOF ) {
+            w[0] = c;
+            seq.append(dict.define(w));
         }
     }
 };
